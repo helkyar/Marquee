@@ -17,6 +17,7 @@ class Gallery {
   list;
   modal;
   modalImg;
+  modalImgName;
   modalImgs;
   modalClose;
   modalNext;
@@ -27,6 +28,7 @@ class Gallery {
     this.list = [...getElements("img", node)];
     this.modal = getElement(".modal");
     this.modalImg = getElement(".modal-main", this.modal);
+    this.modalImgName = getElement(".modal-name", this.modal);
     this.modalImgs = getElement(".modal-imgs img", this.modal);
     this.modalClose = getElement(".btn-close", this.modal);
     this.modalNext = getElement(".btn-next", this.modal);
@@ -34,9 +36,24 @@ class Gallery {
     node.addEventListener("click", this.openModal.bind(this));
   }
 
-  openModal() {
+  openModal(e) {
     console.log(this);
-    this.modal.classList.add("open");
+    if (e.target.tagName == "IMG") {
+      this.setMainImage(e.target);
+      this.setSecondaryImages();
+      this.modal.classList.add("open");
+    }
+  }
+
+  setMainImage(selectedImg) {
+    this.modalImg.src = selectedImg.src;
+    this.modalImgName.textContent = selectedImg.title;
+  }
+
+  setSecondaryImages() {
+    this.modalImgs.innerHTML = this.list
+      .map((img) => `<img src="${img.src}" title="${img.title}"/>`)
+      .join("");
   }
 }
 
