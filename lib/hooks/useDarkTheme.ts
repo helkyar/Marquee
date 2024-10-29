@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react'
 import { useLocalStorage } from './useLocalStorage'
 
 const THEME_KEY = '_dark_theme_'
-const enum Theme {
+export const enum Theme {
   Light = 'light',
   Dark = 'dark',
   System = 'system',
@@ -20,11 +20,13 @@ export function useDarkTheme() {
   }, [])
 
   useEffect(() => {
+    if (isDark === undefined) setIsDark(Theme.System)
+
     if (isDark === Theme.Light) {
       setIsDarkStyle(false)
     } else if (isDark === Theme.Dark) {
       setIsDarkStyle(true)
-    } else if (isDark === Theme.System) {
+    } else {
       const systemTheme = window.matchMedia(
         '(prefers-color-scheme: Dark)'
       ).matches
@@ -32,9 +34,9 @@ export function useDarkTheme() {
     }
   }, [isDark, setIsDarkStyle])
 
-  const toggleDarkTheme = (theme: Theme) => {
+  const specifyDarkTheme = (theme: Theme) => {
     setIsDark(theme)
   }
 
-  return { toggleDarkTheme }
+  return { specifyDarkTheme }
 }
