@@ -9,7 +9,10 @@ export const enum Theme {
 }
 
 export function useDarkTheme() {
-  const [isDark, setIsDark] = useLocalStorage({ key: THEME_KEY })
+  const [isDark, setIsDark] = useLocalStorage<Theme>({
+    key: THEME_KEY,
+    defaultValue: Theme.System,
+  })
 
   const setIsDarkStyle = useCallback((isDark: boolean) => {
     if (isDark) {
@@ -20,8 +23,6 @@ export function useDarkTheme() {
   }, [])
 
   useEffect(() => {
-    if (isDark === undefined) setIsDark(Theme.System)
-
     if (isDark === Theme.Light) {
       setIsDarkStyle(false)
     } else if (isDark === Theme.Dark) {

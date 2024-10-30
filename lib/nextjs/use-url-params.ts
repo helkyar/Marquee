@@ -1,9 +1,13 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useDebouncedCallback } from 'use-debounce'
 
-const delay = 300
-
-export function useParamsFromUrl(query: string | string[]) {
+export function useParamsFromUrl(
+  query: string | string[],
+  {
+    debounced = true,
+    delay = 300,
+  }: { debounced?: boolean; delay?: number } = {}
+) {
   const searchParams = useSearchParams()
   const pathname = usePathname()
   const { replace } = useRouter()
@@ -19,19 +23,22 @@ export function useParamsFromUrl(query: string | string[]) {
     })
   }
 
-  const updateUrlParam = useDebouncedCallback((text: string) => {
-    if (query instanceof Array)
-      throw new Error(
-        'Initialize the hook useParamsFromUrl with a STRING query to use "updateParam" function'
-      )
+  const updateUrlParam = useDebouncedCallback(
+    (text: string) => {
+      if (query instanceof Array)
+        throw new Error(
+          'Initialize the hook useParamsFromUrl with a STRING query to use "updateParam" function'
+        )
 
-    const allParams = new URLSearchParams(searchParams)
+      const allParams = new URLSearchParams(searchParams)
 
-    if (text) allParams.set(query, text)
-    else allParams.delete(query)
+      if (text) allParams.set(query, text)
+      else allParams.delete(query)
 
-    replace(`${pathname}?${allParams.toString()}`)
-  }, delay)
+      replace(`${pathname}?${allParams.toString()}`)
+    },
+    debounced ? delay : 0
+  )
 
   const updateUrlParams = useDebouncedCallback(
     (params: Record<string, string>) => {
@@ -44,7 +51,7 @@ export function useParamsFromUrl(query: string | string[]) {
 
       replace(`${pathname}?${allParams.toString()}`)
     },
-    delay
+    debounced ? delay : 0
   )
 
   const createUrl = (text: string | number): string => {

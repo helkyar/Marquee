@@ -4,29 +4,26 @@ import { useLocalStorage } from './useLocalStorage'
 const THEME_KEY = '_dark_theme_'
 
 export function useToggleDarkTheme() {
-  const [isDark, setIsDark] = useLocalStorage({ key: THEME_KEY })
+  const [isDark, setIsDark] = useLocalStorage<boolean>({ key: THEME_KEY })
 
   const setIsDarkStyle = useCallback((isDark: boolean) => {
-    if (isDark) {
-      document.body.classList.add('dark')
-    } else {
-      document.body.classList.remove('dark')
-    }
+    document.body.classList.toggle('dark', isDark)
   }, [])
 
   useEffect(() => {
-    if (typeof isDark === 'boolean') setIsDarkStyle(isDark)
-    else {
+    if (typeof isDark === 'boolean') {
+      setIsDarkStyle(isDark)
+    } else {
       const systemTheme = window.matchMedia(
-        '(prefers-color-scheme: Dark)'
+        '(prefers-color-scheme: dark)'
       ).matches
       setIsDark(systemTheme)
     }
   }, [isDark, setIsDarkStyle])
 
-  const toggleDarkTheme = () => {
-    setIsDark(!isDark)
-  }
+  const toggleDarkTheme = useCallback(() => {
+    setIsDark((prevIsDark) => !prevIsDark)
+  }, [setIsDark])
 
   return { toggleDarkTheme }
 }
