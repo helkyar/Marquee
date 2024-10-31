@@ -1,0 +1,7 @@
+/* Only specify internal ui with no layout implications
+    -border/outline -padding
+    -background     
+    -box-shadow
+*/
+.card {
+}
