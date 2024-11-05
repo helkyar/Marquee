@@ -1,0 +1,20 @@
+{
+  "usersDashboard": {
+    "roles": ["admin", "user"],
+    "permissions": {
+      "read": "read",
+      "write": "write",
+      "delete": "delete",
+      "like": "complexpermission:thatbackend-engenierscomeupwith:witch$namedoesnteven.makesense"
+    }
+  },
+  "adminDashboard": {
+    "roles": ["admin", "super-admin"],
+    "permissions": {
+      "read": "read",
+      "write": "write",
+      "delete": "delete",
+      "like": "complexpermission:thatbackend-engenierscomeupwith:witch$namedoesnteven.makesense"
+    }
+  }
+}

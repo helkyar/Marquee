@@ -19,11 +19,11 @@ export function useToggleDarkTheme() {
       ).matches
       setIsDark(systemTheme)
     }
-  }, [isDark, setIsDarkStyle])
+  }, [isDark, setIsDarkStyle, setIsDark])
 
   const toggleDarkTheme = useCallback(() => {
     setIsDark((prevIsDark) => !prevIsDark)
   }, [setIsDark])
 
-  return { toggleDarkTheme }
+  return { toggleDarkTheme, isDark }
 }
